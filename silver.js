@@ -125,5 +125,33 @@ function parser (tokens) {
 
 // Traverser
 function traverser (ast, visitor) {
-  
+
+  function traverseArray (array, parent) {
+    array.forEach(function (child) {
+      traverseNode(child, parent)
+    })
+  }
+
+  function traverseNode (node, parent) {
+    var method = visitor[node.type]
+
+    if (method) {
+      method(node, parent)
+    }
+
+    switch (node.type) {
+      case 'Program':
+        traverseArray(node.body, node)
+        break
+      case 'CallExpression':
+        traverseArray(node.params, node)
+        break
+      case 'NumberLiteral':
+        break
+      default:
+        throw new TypeError(node.type)
+    }
+  }
+
+  traverseNode(ast, null)
 }
