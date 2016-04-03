@@ -122,3 +122,8 @@ function parser (tokens) {
 
   return ast
 }
+
+// Traverser
+function traverser (ast, visitor) {
+  
+}
